@@ -20,6 +20,56 @@ app.post("/cadastro", (req, res) => {
     });
 });
 
+app.get("/", (req, res) => {
+  Produtos.findAll()
+    .then((produtos) => {
+      res.send(produtos);
+    })
+    .catch((erro) => {
+      res.send("Erro ao buscar dados" + erro);
+    });
+});
+
+app.get("/:nome", (req, res) => {
+  Produtos.findAll({ where: { nome: req.params.nome } })
+    .then((produto) => {
+      res.send({
+        mensagem: "Produto encontrado",
+        dados: produto,
+      });
+    })
+    .catch((erro) => {
+      res.send("Produto não encontrado" + erro);
+    });
+});
+
+app.patch("/atualizar/:id", (req, res) => {
+  Produtos.update(
+    {
+      nome: req.body.nome,
+      preco: req.body.preco,
+      descricao: req.body.descricao,
+    },
+    { where: { id: req.params.id } },
+  )
+    .then(() => {
+      res.send("Sucesso ao atualizar os dados do produto!!!");
+    })
+    .catch((erro) => {
+      res.send("Erro ao atualizar os dados do produto" + erro);
+    });
+});
+
+app.delete("/deletar/:id", (req, res) => {
+  Produtos.destroy({ where: { id: req.params.id } })
+    .then(() => {
+      res.send("Produto deletado com sucesso!!!");
+    })
+    .catch((erro) => {
+      res.send("Erro ao deletar produto" + erro);
+    });
+});
+
 app.listen(8081, () => {
   console.log("Rodando...");
 });

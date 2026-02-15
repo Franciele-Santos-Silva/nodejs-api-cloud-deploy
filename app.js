@@ -70,6 +70,7 @@ app.delete("/deletar/:id", (req, res) => {
     });
 });
 
-app.listen(8081, () => {
+const PORT = process.env.PORT || 8081;
+app.listen(PORT,"0.0.0.0", () => {
   console.log("Rodando...");
 });
